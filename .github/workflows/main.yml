@@ -44,7 +44,125 @@ jobs:
         if: runner.os == 'Windows'
 
       - name: Run tests
-        run1: python -m unittest unittests/circle_unittests.py
-        run2: python -m unittest unittests/rectangle_unittests.py
-        run3: python -m unittest unittests/square_unittests.py
-        run4: python -m unittest unittests/triangle_unittests.py
+        run: python -m unittest unittests/circle_unittests.py
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+
+      - name: Show Python version and pip
+        run: |
+          python --version
+          pip --version
+
+      - name: Install dependencies on Ubuntu or Windows
+        run: |
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          fi
+        shell: bash
+        if: runner.os == 'Linux'
+
+      - name: Install dependencies on Windows
+        run: |
+          if (Test-Path requirements.txt) {
+            pip install -r requirements.txt
+          }
+        shell: pwsh
+        if: runner.os == 'Windows'
+
+      - name: Run tests
+        run: python -m unittest unittests/rectangle_unittests.py
+
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+
+      - name: Show Python version and pip
+        run: |
+          python --version
+          pip --version
+
+      - name: Install dependencies on Ubuntu or Windows
+        run: |
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          fi
+        shell: bash
+        if: runner.os == 'Linux'
+
+      - name: Install dependencies on Windows
+        run: |
+          if (Test-Path requirements.txt) {
+            pip install -r requirements.txt
+          }
+        shell: pwsh
+        if: runner.os == 'Windows'
+
+      - name: Run tests
+        run: python -m unittest unittests/square_unittests.py
+
+
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+
+      - name: Show Python version and pip
+        run: |
+          python --version
+          pip --version
+
+      - name: Install dependencies on Ubuntu or Windows
+        run: |
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          fi
+        shell: bash
+        if: runner.os == 'Linux'
+
+      - name: Install dependencies on Windows
+        run: |
+          if (Test-Path requirements.txt) {
+            pip install -r requirements.txt
+          }
+        shell: pwsh
+        if: runner.os == 'Windows'
+
+      - name: Run tests
+        run: python -m unittest unittests/triangle_unittests.py
+        
