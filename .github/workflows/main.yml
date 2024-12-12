@@ -1,12 +1,10 @@
-name: CI\CD
+name: Run Unit Tests
+
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
-
+      - master
 
 jobs:
   test:
@@ -14,35 +12,21 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.12
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12.6'
 
-      - name: Show Python version and pip
-        run: |
-          python --version
-          pip --version
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
 
-      - name: Install dependencies on Ubuntu or Windows
-        run: |
-          if [ -f requirements.txt ]; then
-            pip install -r requirements.txt
-          fi
-        shell: bash
-        if: runner.os == 'Linux'
-
-      - name: Install dependencies on Windows
-        run: |
-          if (Test-Path requirements.txt) {
-            pip install -r requirements.txt
-          }
-        shell: pwsh
-        if: runner.os == 'Windows'
-
-      - name: Run tests
-        run: python -m unittest unittests/rectangle_unittests.py
+    - name: Run Unit Tests
+      run: |
+        python -m unittest discover -s test
